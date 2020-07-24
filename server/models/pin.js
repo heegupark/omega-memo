@@ -16,6 +16,11 @@ const pinSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  color: {
+    type: String,
+    required: true,
+    default: '#ffffff'
+  },
   isLocked: {
     type: Boolean,
     required: true,
