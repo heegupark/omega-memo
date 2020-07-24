@@ -1,2 +1,2 @@
 # omega-pin
-share or pin photos!
+pin you memos!
