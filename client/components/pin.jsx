@@ -190,7 +190,7 @@ class Pin extends Component {
               aria-label="minimum height"
               rowsMin={8}
               style={{ color: `${textColor}` }}
-              disabled={isLocked || isDelete}
+              readOnly={isLocked || isDelete}
               className="w-100 bg-transparent border-0 px-2 py-2 resize-none"
               placeholder="memo here"
               value={memo || ''}
