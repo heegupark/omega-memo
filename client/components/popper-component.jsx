@@ -40,7 +40,6 @@ export default function PopperComponent(props) {
     <>
       <Tooltip
         arrow
-        className='mx-2'
         title={isBg ? 'color this memo' : 'color your text'}>
         <IconButton
           aria-describedby={id}

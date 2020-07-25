@@ -157,7 +157,7 @@ class MemoMobile extends Component {
           </div>
           <TextareaAutosize
             aria-label="memo"
-            rowsMin={8}
+            rowsMin={5}
             style={{ color: `${textColor}` }}
             readOnly={isLocked || isDelete}
             className="w-100 bg-transparent border-0 px-2 py-2 resize-none"
@@ -223,7 +223,6 @@ class MemoMobile extends Component {
                         />
                         <Tooltip
                           arrow
-                          className='mx-2'
                           title='delete this memo'>
                           <IconButton
                             style={{ color: revColor }}

@@ -46,9 +46,15 @@ body {
 }
 
 @media (max-width: 767.98px) {
+    .memo {
+    width: 100px;
+    font-size: 12px;
+    min-height: 120px;
+  }
 }
 
 @media (max-width: 575.98px) {
+
 }
 
 @media (max-width: 260px) {

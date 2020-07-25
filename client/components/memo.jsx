@@ -235,31 +235,36 @@ class Memo extends Component {
                       ? ('')
                       : (
                         <>
-                          <PopperComponent
-                            color={color}
-                            revColor={revColor}
-                            category="bg"
-                            setBackgroundColor={setBackgroundColor}
-                          />
-                          <PopperComponent
-                            color={textColor}
-                            textColor={textColor}
-                            category="text"
-                            setTextColor={setTextColor}
-                          />
-                          <Tooltip
-                            arrow
-                            className='mx-2'
-                            title='delete this memo'>
-                            <IconButton
-                              style={{ color: revColor }}
-                              className="my-auto"
-                              size="small"
-                              aria-label='delete this memo'
-                              onClick={handleDelBtnToggle}
-                            ><DeleteOutlinedIcon />
-                            </IconButton>
-                          </Tooltip>
+                          <span className="mx-2">
+                            <PopperComponent
+                              color={color}
+                              revColor={revColor}
+                              category="bg"
+                              setBackgroundColor={setBackgroundColor}
+                            />
+                          </span>
+                          <span className="mx-2">
+                            <PopperComponent
+                              color={textColor}
+                              textColor={textColor}
+                              category="text"
+                              setTextColor={setTextColor}
+                            />
+                          </span>
+                          <span className="mx-2">
+                            <Tooltip
+                              arrow
+                              title='delete this memo'>
+                              <IconButton
+                                style={{ color: revColor }}
+                                className="my-auto"
+                                size="small"
+                                aria-label='delete this memo'
+                                onClick={handleDelBtnToggle}
+                              ><DeleteOutlinedIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </span>
                         </>
                       )
                     }
