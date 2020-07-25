@@ -24,8 +24,10 @@ class Pin extends Component {
       positionY: null,
       memo: '',
       isPallete: false,
-      color: '#ffffff'
+      color: '#ffffff',
+      textColor: '#000000'
     };
+    this.setTextColor = this.setTextColor.bind(this);
     this.setBackgroundColor = this.setBackgroundColor.bind(this);
     this.handleUnlockBtnClick = this.handleUnlockBtnClick.bind(this);
     this.handleLockBtnClick = this.handleLockBtnClick.bind(this);
@@ -34,6 +36,7 @@ class Pin extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.changePin = this.changePin.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.reverseColor = this.reverseColor.bind(this);
     this.idRef = React.createRef();
     this.positionRef = React.createRef();
   }
@@ -93,6 +96,11 @@ class Pin extends Component {
     this.changePin();
   }
 
+  setTextColor(textColor) {
+    this.setState({ textColor });
+    this.changePin();
+  }
+
   changePin(isLocked) {
     const currentPosX = this.positionRef.current.state.x;
     const currentPosY = this.positionRef.current.state.y;
@@ -102,6 +110,7 @@ class Pin extends Component {
       positionY: currentPosY,
       memo: this.state.memo,
       color: this.state.color,
+      textColor: this.state.textColor,
       isLocked
     };
     this.props.updatePin(pin);
@@ -120,8 +129,12 @@ class Pin extends Component {
     }
   }
 
+  reverseColor(color) {
+    return '#' + ('000000' + (0xFFFFFF ^ parseInt(color.substring(1), 16)).toString(16)).slice(-6);
+  }
+
   render() {
-    const { memo, isDelete, isLocked, positionX, positionY, color } = this.state;
+    const { memo, isDelete, isLocked, positionX, positionY, color, textColor } = this.state;
     const {
       idRef,
       positionRef,
@@ -131,8 +144,11 @@ class Pin extends Component {
       handleChangeInput,
       handleDelBtnToggle,
       setBackgroundColor,
+      setTextColor,
+      reverseColor,
       handleChange
     } = this;
+    const revColor = reverseColor(color);
     return (
       <div>
         <Draggable
@@ -150,10 +166,33 @@ class Pin extends Component {
           onStop={handleChange}>
           <Card
             style={{ backgroundColor: `${color}` }}
-            className="pin handle rounded position-absolute">
+            className="pin handle rounded position-absolute text-center">
+            {isDelete
+              ? (
+                <div className="w-100 text-center h-30"></div>
+              )
+              : (
+                <div className="w-100 text-center h-30">
+                  <Tooltip
+                    arrow
+                    title={isLocked ? 'unlock' : 'lock'}>
+                    <IconButton
+                      color='primary'
+                      className="my-auto"
+                      size="small"
+                      style={{ color: revColor }}
+                      aria-label={isLocked ? 'unlock this memo' : 'lock this memo'}
+                      onClick={isLocked ? handleUnlockBtnClick : handleLockBtnClick}
+                    >{isLocked ? <LockOpenIcon /> : <LockIcon />}
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              )
+            }
             <TextareaAutosize
               aria-label="minimum height"
               rowsMin={8}
+              style={{ color: `${textColor}` }}
               disabled={isLocked || isDelete}
               className="w-100 bg-transparent border-0 px-2 py-2 resize-none"
               placeholder="memo here"
@@ -163,8 +202,9 @@ class Pin extends Component {
               ? (
                 <>
                   <Fade in={true}>
-                    <div className="position-absolute card-btn-custom">
-                      <div className="w-100 text-center my-4 mx-auto">
+                    <div
+                      className="position-absolute w-100 h-100 card-btn-custom ">
+                      <div className="w-100 text-center mt-5 mx-auto">
                         <Tooltip arrow title='delete this card?'>
                           <Button
                             ref={idRef}
@@ -193,52 +233,34 @@ class Pin extends Component {
                       </div>
                     </div>
                   </Fade>
-                  <div className="w-100 text-center h-32"></div>
+                  <div className="w-100 text-center h-30"></div>
                 </>
               )
               : (
                 <Fade in={true}>
-                  <div className="text-center h-32">
+                  <div className="text-center h-30">
                     {isLocked
-                      ? (
-                        <Tooltip
-                          arrow
-                          title='unlock'>
-                          <IconButton
-                            color='primary'
-                            className="my-auto"
-                            size="small"
-                            aria-label='unlock this memo'
-                            onClick={handleUnlockBtnClick}
-                          ><LockOpenIcon />
-                          </IconButton>
-                        </Tooltip>
-                      )
+                      ? ('')
                       : (
                         <>
                           <PopperComponent
                             color={color}
+                            revColor={revColor}
+                            category="bg"
                             setBackgroundColor={setBackgroundColor}
                           />
-                          <Tooltip
-                            arrow
-                            className='mx-2'
-                            title='lock'>
-                            <IconButton
-                              color='primary'
-                              className="my-auto"
-                              size="small"
-                              aria-label='lock this memo'
-                              onClick={handleLockBtnClick}
-                            ><LockIcon />
-                            </IconButton>
-                          </Tooltip>
+                          <PopperComponent
+                            color={textColor}
+                            textColor={textColor}
+                            category="text"
+                            setTextColor={setTextColor}
+                          />
                           <Tooltip
                             arrow
                             className='mx-2'
                             title='delete this memo'>
                             <IconButton
-                              color='secondary'
+                              style={{ color: revColor }}
                               className="my-auto"
                               size="small"
                               aria-label='delete this memo'

@@ -21,8 +21,8 @@ main {
 }
 
 .card-btn-custom {
-  top: 10%;
-  left: 25%;
+  top: 0;
+  background-color: rgb(0,0,0,0.5);
 }
 
 .pin-board {
@@ -32,8 +32,8 @@ main {
   min-height: 1000px;
 }
 
-.h-32 {
-  height: 32px;
+.h-30 {
+  height: 30px;
 }
 
 .pin {

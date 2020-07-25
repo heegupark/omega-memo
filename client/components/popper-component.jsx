@@ -5,6 +5,7 @@ import Fade from '@material-ui/core/Fade';
 import { BlockPicker } from 'react-color';
 import IconButton from '@material-ui/core/IconButton';
 import PaletteIcon from '@material-ui/icons/Palette';
+import TextFieldsIcon from '@material-ui/icons/TextFields';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -14,8 +15,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function PopperComponent(props) {
+  const isBg = props.category === 'bg';
   const classes = useStyles();
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [value, setValue] = React.useState(props.color);
 
@@ -28,8 +29,11 @@ export default function PopperComponent(props) {
 
   const handleChangeComplete = (color, event) => {
     setValue(color.hex);
-    props.setBackgroundColor(color.hex);
-    // setAnchorEl(null);
+    if (isBg) {
+      props.setBackgroundColor(color.hex);
+    } else {
+      props.setTextColor(color.hex);
+    }
   };
 
   const handlePopperClose = event => {
@@ -41,15 +45,19 @@ export default function PopperComponent(props) {
       <Tooltip
         arrow
         className='mx-2'
-        title='color this memo'>
+        title={isBg ? 'color this memo' : 'color your text'}>
         <IconButton
-          aria-describedby={id}
           color='secondary'
           className="my-auto"
           size="small"
-          aria-label='color this memo'
+          aria-label={isBg ? 'color this memo' : 'color your text'}
           onClick={handleClick}
-        ><PaletteIcon />
+        >{isBg
+            ? <PaletteIcon
+              style={{ color: props.revColor }}/>
+            : <TextFieldsIcon
+              style={{ color: props.textColor }}
+            />}
         </IconButton>
       </Tooltip>
       <Popper
@@ -62,7 +70,7 @@ export default function PopperComponent(props) {
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={100}>
             <BlockPicker
-              color={value}
+              color={props.color}
               value={value}
               onChange={({ hex }) => {
                 setValue(hex);
