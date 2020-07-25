@@ -35,7 +35,6 @@ class Memo extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.changeMemo = this.changeMemo.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    this.reverseColor = this.reverseColor.bind(this);
     this.idRef = React.createRef();
     this.positionRef = React.createRef();
   }
@@ -128,10 +127,6 @@ class Memo extends Component {
     }
   }
 
-  reverseColor(color) {
-    return '#' + ('000000' + (0xFFFFFF ^ parseInt(color.substring(1), 16)).toString(16)).slice(-6);
-  }
-
   render() {
     const { memo, isDelete, isLocked, positionX, positionY, color, textColor } = this.state;
     const {
@@ -144,9 +139,9 @@ class Memo extends Component {
       handleDelBtnToggle,
       setBackgroundColor,
       setTextColor,
-      reverseColor,
       handleChange
     } = this;
+    const { reverseColor } = this.props;
     const revColor = reverseColor(color);
     return (
       <div>
@@ -192,7 +187,7 @@ class Memo extends Component {
               style={{ color: `${textColor}` }}
               readOnly={isLocked || isDelete}
               className="w-100 bg-transparent border-0 px-2 py-2 resize-none"
-              placeholder={isLocked ? 'drag this' : 'memo here'}
+              placeholder={isLocked ? 'unlock to memo!' : 'memo here'}
               value={memo || ''}
               onChange={handleChangeInput} />
             {isDelete

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import Popper from '@material-ui/core/Popper';
 import Fade from '@material-ui/core/Fade';
@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme => ({
 export default function PopperComponent(props) {
   const isBg = props.category === 'bg';
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [value, setValue] = React.useState(props.color);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [value, setValue] = useState(props.color);
 
   const handleClick = event => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -36,10 +36,6 @@ export default function PopperComponent(props) {
     }
   };
 
-  const handlePopperClose = event => {
-    setAnchorEl(null);
-  };
-
   return (
     <>
       <Tooltip
@@ -47,6 +43,7 @@ export default function PopperComponent(props) {
         className='mx-2'
         title={isBg ? 'color this memo' : 'color your text'}>
         <IconButton
+          aria-describedby={id}
           color='secondary'
           className="my-auto"
           size="small"
@@ -63,9 +60,13 @@ export default function PopperComponent(props) {
       <Popper
         id={id}
         open={open}
-        onBlur={handlePopperClose}
         anchorEl={anchorEl}
         className={classes.popper}
+        modifiers={{
+          preventOverflow: {
+            enabled: true
+          }
+        }}
         transition>
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={100}>

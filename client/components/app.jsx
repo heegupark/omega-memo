@@ -21,6 +21,7 @@ class App extends Component {
     this.handleDisclaimerAccept = this.handleDisclaimerAccept.bind(this);
     this.updateMemo = this.updateMemo.bind(this);
     this.deleteMemo = this.deleteMemo.bind(this);
+    this.reverseColor = this.reverseColor.bind(this);
   }
 
   componentDidMount() {
@@ -139,9 +140,13 @@ class App extends Component {
     });
   }
 
+  reverseColor(color) {
+    return '#' + ('000000' + (0xFFFFFF ^ parseInt(color.substring(1), 16)).toString(16)).slice(-6);
+  }
+
   render() {
     const { memos, isDisclaimerAccepted } = this.state;
-    const { handleBoardClick, handleDisclaimerAccept, updateMemo, deleteMemo } = this;
+    const { handleBoardClick, handleDisclaimerAccept, updateMemo, deleteMemo, reverseColor } = this;
     if (isMobile) {
       return (
         <>
@@ -162,6 +167,7 @@ class App extends Component {
                                 memo={memo}
                                 updateMemo={updateMemo}
                                 deleteMemo={deleteMemo}
+                                reverseColor={reverseColor}
                               />
                             );
                           })
@@ -212,6 +218,7 @@ class App extends Component {
                         memo={memo}
                         updateMemo={updateMemo}
                         deleteMemo={deleteMemo}
+                        reverseColor={reverseColor}
                       />
                     );
                   })

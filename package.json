@@ -122,13 +122,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/heegupark/omega-pin.git"
+    "url": "git+https://github.com/heegupark/omega-memo.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/heegupark/omega-pin/issues"
+    "url": "https://github.com/heegupark/omega-memo/issues"
   },
-  "homepage": "https://github.com/heegupark/omega-pin#readme"
+  "homepage": "https://github.com/heegupark/omega-memo#readme"
 }
