@@ -43,4 +43,4 @@
 ## Screen shot
 [Desktop]
 
-![Omega Memo](https://github.com/heegupark/omega-pin/blob/master/pin-ss-001.gif)
+![Omega Memo](https://github.com/heegupark/omega-memo/blob/master/memo-ss-001.gif)
