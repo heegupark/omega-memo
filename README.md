@@ -1,4 +1,4 @@
-# o-pin
+# o-memo
 
 > - Maintained by: `Heegu Park`
 
@@ -43,4 +43,4 @@
 ## Screen shot
 [Desktop]
 
-![Omega Pin](https://github.com/heegupark/omega-pin/blob/master/pin-ss-001.gif)
+![Omega Memo](https://github.com/heegupark/omega-pin/blob/master/pin-ss-001.gif)
