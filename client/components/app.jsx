@@ -3,8 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import Header from './header';
 import Footer from './footer';
 import Disclaimer from './disclaimer';
-import Pin from './pin';
-import PinMobile from './pin-mobile';
+import Memo from './memo';
+import MemoMobile from './memo-mobile';
 import { isMobile } from 'react-device-detect';
 import socketIOClient from 'socket.io-client';
 const socket = socketIOClient('/');
@@ -13,31 +13,31 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      pins: [],
-      isDisclaimerAccepted: localStorage.getItem('omegapinaccept')
+      memos: [],
+      isDisclaimerAccepted: localStorage.getItem('omegamemoaccept')
     };
-    this.getPins = this.getPins.bind(this);
+    this.getMemos = this.getMemos.bind(this);
     this.handleBoardClick = this.handleBoardClick.bind(this);
     this.handleDisclaimerAccept = this.handleDisclaimerAccept.bind(this);
-    this.updatePin = this.updatePin.bind(this);
-    this.deletePin = this.deletePin.bind(this);
+    this.updateMemo = this.updateMemo.bind(this);
+    this.deleteMemo = this.deleteMemo.bind(this);
   }
 
   componentDidMount() {
-    this.getPins();
-    socket.on('pins', data => {
+    this.getMemos();
+    socket.on('memos', data => {
       if (data.status === 'add') {
         this.setState({
-          pins: [...this.state.pins, data.data]
+          memos: [...this.state.memos, data.data]
         });
       } else if (data.status === 'delete') {
         this.setState({
-          pins: this.state.pins.filter(pin => pin._id !== data.data._id)
+          memos: this.state.memos.filter(memo => memo._id !== data.data._id)
         });
       } else if (data.status === 'update') {
         this.setState({
-          pins: this.state.pins.map(pin => {
-            return pin._id.toString() === data.data._id.toString() ? data.data : pin;
+          memos: this.state.memos.map(memo => {
+            return memo._id.toString() === data.data._id.toString() ? data.data : memo;
           })
         });
       }
@@ -50,68 +50,68 @@ class App extends Component {
     socket.emit('disconnect');
   }
 
-  getPins() {
-    fetch('/api/pin')
+  getMemos() {
+    fetch('/api/memo')
       .then(res => res.json())
       .then(result => {
         this.setState({
-          pins: result.data
+          memos: result.data
         });
       })
       .catch(err => {
-        console.error(`Something wrong happened when getting pins:${err.message}`);
+        console.error(`Something wrong happened when getting memos:${err.message}`);
       });
   }
 
   handleBoardClick(e) {
-    const pin = {
+    const memo = {
       positionX: e.clientX,
       positionY: e.clientY,
       memo: ''
     };
     if (e.target === e.currentTarget) {
-      fetch('/api/pin', {
+      fetch('/api/memo', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(pin)
+        body: JSON.stringify(memo)
       })
         .then(res => res.json())
         .then(result => {
           // this.setState({
-          //   pins: [...this.state.pins, result.data]
+          //   memos: [...this.state.memos, result.data]
           // });
         })
         .catch(err => {
-          console.error(`Something wrong happened when creating a pin:${err.message}`);
+          console.error(`Something wrong happened when creating a memo:${err.message}`);
         });
     }
   }
 
-  updatePin(updatedPin) {
-    fetch('/api/pin', {
+  updateMemo(updatedMemo) {
+    fetch('/api/memo', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(updatedPin)
+      body: JSON.stringify(updatedMemo)
     })
       .then(res => res.json())
       .then(result => {
         this.setState({
-          pins: this.state.pins.map(pin => {
-            return pin._id.toString() === updatedPin._id.toString() ? updatedPin : pin;
+          memos: this.state.memos.map(memo => {
+            return memo._id.toString() === updatedMemo._id.toString() ? updatedMemo : memo;
           })
         });
       })
       .catch(err => {
-        console.error(`Something wrong happened when patching a pin:${err.message}`);
+        console.error(`Something wrong happened when patching a memo:${err.message}`);
       });
   }
 
-  deletePin(id) {
-    fetch('/api/pin', {
+  deleteMemo(id) {
+    fetch('/api/memo', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -122,14 +122,14 @@ class App extends Component {
       .then(result => {
         if (result.success) {
           this.setState({
-            pins: this.state.pins.filter(pin => {
-              return pin._id.toString() !== id.toString();
+            memos: this.state.memos.filter(memo => {
+              return memo._id.toString() !== id.toString();
             })
           });
         }
       })
       .catch(err => {
-        console.error(`Something wrong happened when deleting a pin:${err.message}`);
+        console.error(`Something wrong happened when deleting a memo:${err.message}`);
       });
   }
 
@@ -140,8 +140,8 @@ class App extends Component {
   }
 
   render() {
-    const { pins, isDisclaimerAccepted } = this.state;
-    const { handleBoardClick, handleDisclaimerAccept, updatePin, deletePin } = this;
+    const { memos, isDisclaimerAccepted } = this.state;
+    const { handleBoardClick, handleDisclaimerAccept, updateMemo, deleteMemo } = this;
     if (isMobile) {
       return (
         <>
@@ -149,19 +149,19 @@ class App extends Component {
           {isDisclaimerAccepted
             ? (
               <main
-                className="bg-dark pin-board py-5">
+                className="bg-dark memo-board py-5">
                 <Grid container>
                   <Grid item xs>
                     <Grid container justify="center">
-                      {pins
+                      {memos
                         ? (
-                          pins.map(pin => {
+                          memos.map(memo => {
                             return (
-                              <PinMobile
-                                key={pin._id}
-                                pin={pin}
-                                updatePin={updatePin}
-                                deletePin={deletePin}
+                              <MemoMobile
+                                key={memo._id}
+                                memo={memo}
+                                updateMemo={updateMemo}
+                                deleteMemo={deleteMemo}
                               />
                             );
                           })
@@ -171,7 +171,7 @@ class App extends Component {
                       <div className="mt-3 mx-2">
                         <div
                           style={{ height: '246px' }}
-                          className="bg-transparent pin rounded position-relative text-center"
+                          className="bg-transparent memo rounded position-relative text-center"
                         >
                           <div
                             style={{ fontSize: '55px', color: 'white' }}
@@ -201,17 +201,17 @@ class App extends Component {
         {isDisclaimerAccepted
           ? (
             <main
-              className="bg-dark pin-board cursor py-3"
+              className="bg-dark memo-board cursor py-3"
               onMouseDown={handleBoardClick}>
-              {pins
+              {memos
                 ? (
-                  pins.map(pin => {
+                  memos.map(memo => {
                     return (
-                      <Pin
-                        key={pin._id}
-                        pin={pin}
-                        updatePin={updatePin}
-                        deletePin={deletePin}
+                      <Memo
+                        key={memo._id}
+                        memo={memo}
+                        updateMemo={updateMemo}
+                        deleteMemo={deleteMemo}
                       />
                     );
                   })

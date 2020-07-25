@@ -4,7 +4,7 @@ const staticMiddleware = require('./static-middleware');
 const ClientError = require('./client-error');
 const express = require('express');
 const app = express();
-const Pin = require('./models/pin');
+const Memo = require('./models/memo');
 app.use(staticMiddleware);
 app.use(express.json());
 // for socket communication
@@ -22,59 +22,59 @@ io.on('connection', socket => {
     console.log('Client disconnected');
   });
 });
-// GETTING PINS
-app.get('/api/pin', async (req, res) => {
+// GETTING MEMOS
+app.get('/api/memo', async (req, res) => {
   try {
-    const pin = await Pin.find();
-    if (!pin) {
-      return res.status(400).json({ success: false, message: 'failed to find a pin' });
+    const memo = await Memo.find();
+    if (!memo) {
+      return res.status(400).json({ success: false, message: 'failed to find a memo' });
     }
-    return res.status(200).json({ success: true, data: pin });
+    return res.status(200).json({ success: true, data: memo });
   } catch (e) {
     return res.status(400).json(e);
   }
 });
-// ADDING A PIN
-app.post('/api/pin', async (req, res) => {
-  const pin = new Pin({
+// ADDING A MEMO
+app.post('/api/memo', async (req, res) => {
+  const memo = new Memo({
     ...req.body
   });
   try {
-    await pin.save();
-    req.io.sockets.emit('pins', { status: 'add', data: pin });
-    return res.status(200).json({ success: true, data: pin });
+    await memo.save();
+    req.io.sockets.emit('memos', { status: 'add', data: memo });
+    return res.status(200).json({ success: true, data: memo });
   } catch (e) {
     return res.status(400).json(e);
   }
 });
-// DELETING A PIN
-app.delete('/api/pin/', async (req, res) => {
+// DELETING A MEMO
+app.delete('/api/memo', async (req, res) => {
   const { _id } = req.body;
   try {
-    const pin = await Pin.findOneAndDelete({ _id });
-    if (!pin) {
-      return res.status(404).json({ success: false, message: 'failed to find a pin' });
+    const memo = await Memo.findOneAndDelete({ _id });
+    if (!memo) {
+      return res.status(404).json({ success: false, message: 'failed to find a memo' });
     }
-    req.io.sockets.emit('pins', { status: 'delete', data: pin });
+    req.io.sockets.emit('memos', { status: 'delete', data: memo });
     return res.status(201).json({ success: true });
   } catch (e) {
     return res.status(400).json({ success: false, message: e.message });
   }
 });
-// UPDATING A PIN
-app.patch('/api/pin/', async (req, res) => {
+// UPDATING A MEMO
+app.patch('/api/memo', async (req, res) => {
   const updates = Object.keys(req.body);
   const { _id } = req.body;
   try {
-    const pin = await Pin.findOne({ _id });
-    if (!pin) {
-      return res.status(404).json({ success: false, message: 'failed to find a pin' });
+    const memo = await Memo.findOne({ _id });
+    if (!memo) {
+      return res.status(404).json({ success: false, message: 'failed to find a memo' });
     }
     updates.forEach(update => {
-      pin[update] = req.body[update];
+      memo[update] = req.body[update];
     });
-    await pin.save();
-    req.io.sockets.emit(`pin-${_id}`, { status: 'update', data: pin });
+    await memo.save();
+    req.io.sockets.emit(`memo-${_id}`, { status: 'update', data: memo });
     return res.status(201).json({ success: true });
   } catch (e) {
     return res.status(400).json({ success: false, message: e.message });

@@ -5,7 +5,7 @@ class Footer extends Component {
     return (
       <footer className="row mx-auto bg-transparent fixed-bottom">
         <div className="col text-center text-white pb-2">
-            Omegathrone makes ©o-pin
+            Omegathrone makes ©o-memo
         </div>
       </footer>
     );

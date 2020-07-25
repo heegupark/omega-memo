@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const pinSchema = new mongoose.Schema({
+const memoSchema = new mongoose.Schema({
   memo: {
     type: String,
     required: false,
@@ -35,6 +35,6 @@ const pinSchema = new mongoose.Schema({
   timestamps: true
 });
 
-const Gram = mongoose.model('Pin', pinSchema);
+const Gram = mongoose.model('Memo', memoSchema);
 
 module.exports = Gram;

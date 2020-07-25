@@ -12,7 +12,7 @@ import PopperComponent from './popper-component';
 
 const socket = socketIOClient('/');
 
-class PinMobile extends Component {
+class MemoMobile extends Component {
   constructor() {
     super();
     this.state = {
@@ -30,7 +30,7 @@ class PinMobile extends Component {
     this.handleChangeInput = this.handleChangeInput.bind(this);
     this.handleDelBtnToggle = this.handleDelBtnToggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.changePin = this.changePin.bind(this);
+    this.Memo = this.Memo.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.reverseColor = this.reverseColor.bind(this);
     this.idRef = React.createRef();
@@ -38,13 +38,13 @@ class PinMobile extends Component {
   }
 
   componentDidMount() {
-    const { ...rest } = this.props.pin;
-    if (this.props.pin) {
+    const { ...rest } = this.props.memo;
+    if (this.props.memo) {
       this.setState({
         ...rest
       });
     }
-    socket.on(`pin-${this.props.pin._id}`, data => {
+    socket.on(`memo-${this.props.memo._id}`, data => {
       const { ...rest } = data.data;
       this.setState({
         ...rest
@@ -57,7 +57,7 @@ class PinMobile extends Component {
     this.setState({
       isLocked: true
     });
-    this.changePin(true);
+    this.Memo(true);
   }
 
   handleUnlockBtnClick(e) {
@@ -65,7 +65,7 @@ class PinMobile extends Component {
     this.setState({
       isLocked: false
     });
-    this.changePin(false);
+    this.Memo(false);
   }
 
   handleChangeInput(e) {
@@ -84,24 +84,24 @@ class PinMobile extends Component {
 
   handleDelete(e) {
     e.preventDefault();
-    this.props.deletePin(this.props.pin._id);
+    this.props.deleteMemo(this.props.memo._id);
   }
 
   setBackgroundColor(color) {
     this.setState({ color });
-    this.changePin();
+    this.Memo();
   }
 
   setTextColor(textColor) {
     this.setState({ textColor });
-    this.changePin();
+    this.Memo();
   }
 
-  changePin(isLocked) {
+  Memo(isLocked) {
     const currentPosX = 100 + Math.floor((Math.random(0, 1) * 600));
     const currentPosY = 100 + Math.floor((Math.random(0, 1) * 400));
-    const pin = {
-      _id: this.props.pin._id,
+    const memo = {
+      _id: this.props.memo._id,
       positionX: currentPosX,
       positionY: currentPosY,
       memo: this.state.memo,
@@ -109,12 +109,12 @@ class PinMobile extends Component {
       textColor: this.state.textColor,
       isLocked
     };
-    this.props.updatePin(pin);
+    this.props.updateMemo(memo);
   }
 
   handleChange(e) {
     e.preventDefault();
-    this.changePin();
+    this.Memo();
   }
 
   reverseColor(color) {
@@ -139,7 +139,7 @@ class PinMobile extends Component {
       <div className="mt-3 mx-2">
         <Card
           style={{ backgroundColor: `${color}` }}
-          className="pin handle rounded position-relative text-center">
+          className="memo handle rounded position-relative text-center">
           <div className="w-100 text-center h-30">
             {isDelete
               ? ('')
@@ -252,4 +252,4 @@ class PinMobile extends Component {
   }
 }
 
-export default PinMobile;
+export default MemoMobile;

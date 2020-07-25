@@ -13,7 +13,7 @@ import PopperComponent from './popper-component';
 
 const socket = socketIOClient('/');
 
-class Pin extends Component {
+class Memo extends Component {
   constructor() {
     super();
     this.state = {
@@ -33,7 +33,7 @@ class Pin extends Component {
     this.handleChangeInput = this.handleChangeInput.bind(this);
     this.handleDelBtnToggle = this.handleDelBtnToggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.changePin = this.changePin.bind(this);
+    this.changeMemo = this.changeMemo.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.reverseColor = this.reverseColor.bind(this);
     this.idRef = React.createRef();
@@ -41,13 +41,13 @@ class Pin extends Component {
   }
 
   componentDidMount() {
-    const { ...rest } = this.props.pin;
-    if (this.props.pin) {
+    const { ...rest } = this.props.memo;
+    if (this.props.memo) {
       this.setState({
         ...rest
       });
     }
-    socket.on(`pin-${this.props.pin._id}`, data => {
+    socket.on(`memo-${this.props.memo._id}`, data => {
       const { ...rest } = data.data;
       this.setState({
         ...rest
@@ -60,7 +60,7 @@ class Pin extends Component {
     this.setState({
       isLocked: true
     });
-    this.changePin(true);
+    this.changeMemo(true);
   }
 
   handleUnlockBtnClick(e) {
@@ -68,7 +68,7 @@ class Pin extends Component {
     this.setState({
       isLocked: false
     });
-    this.changePin(false);
+    this.changeMemo(false);
   }
 
   handleChangeInput(e) {
@@ -87,24 +87,24 @@ class Pin extends Component {
 
   handleDelete(e) {
     e.preventDefault();
-    this.props.deletePin(this.props.pin._id);
+    this.props.deleteMemo(this.props.memo._id);
   }
 
   setBackgroundColor(color) {
     this.setState({ color });
-    this.changePin();
+    this.changeMemo();
   }
 
   setTextColor(textColor) {
     this.setState({ textColor });
-    this.changePin();
+    this.changeMemo();
   }
 
-  changePin(isLocked) {
+  changeMemo(isLocked) {
     const currentPosX = this.positionRef.current.state.x;
     const currentPosY = this.positionRef.current.state.y;
-    const pin = {
-      _id: this.props.pin._id,
+    const memo = {
+      _id: this.props.memo._id,
       positionX: currentPosX,
       positionY: currentPosY,
       memo: this.state.memo,
@@ -112,7 +112,7 @@ class Pin extends Component {
       textColor: this.state.textColor,
       isLocked
     };
-    this.props.updatePin(pin);
+    this.props.updateMemo(memo);
   }
 
   handleChange(e) {
@@ -123,8 +123,8 @@ class Pin extends Component {
       positionX: this.positionRef.current.state.x,
       positionY: this.positionRef.current.state.y
     });
-    if (currentPosX !== this.props.pin.positionX && currentPosY !== this.props.pin.positioY) {
-      this.changePin();
+    if (currentPosX !== this.props.memo.positionX && currentPosY !== this.props.memo.positioY) {
+      this.changeMemo();
     }
   }
 
@@ -165,7 +165,7 @@ class Pin extends Component {
           onStop={handleChange}>
           <Card
             style={{ backgroundColor: `${color}` }}
-            className="pin handle rounded position-absolute text-center">
+            className="memo handle rounded position-absolute text-center">
             <div className="w-100 text-center h-30">
               {isDelete
                 ? ('')
@@ -279,4 +279,4 @@ class Pin extends Component {
   }
 }
 
-export default Pin;
+export default Memo;

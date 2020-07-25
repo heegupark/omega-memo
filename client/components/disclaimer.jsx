@@ -46,7 +46,7 @@ export default function Disclaimer(props) {
   };
 
   const handleAcceptClick = () => {
-    localStorage.setItem('omegapinaccept', true);
+    localStorage.setItem('omegamemoaccept', true);
     props.handleDisclaimerAccept(true);
     handleClose();
   };
@@ -67,8 +67,8 @@ export default function Disclaimer(props) {
       >
         <Fade in={open}>
           <div className={props.isMobile ? classes.paperForMobile : classes.paper}>
-            <p className="mx-auto my-2 h5">Welcome to Omega Pin</p>
-            <div className="mx-3 my-2 text-center">This app is created strictly for demonstration purposes. By clicking the button below, you accept that Omega Pin do not guarantee storing the memos that you write.</div>
+            <p className="mx-auto my-2 h5">Welcome to Omega Memo</p>
+            <div className="mx-3 my-2 text-center">This app is created strictly for demonstration purposes. By clicking the button below, you accept that Omega Memo do not guarantee storing the memos that you write.</div>
             <button className="btn btn-sm btn-danger mx-auto my-2" onClick={handleAcceptClick}>Accept</button>
             <p className="mx-auto my-2 text-warning text-center">This application is in-progress. I built this app using React, Node.js, Material UI, socker.io, and MongoDB to provide a function for users to play with memos.</p>
             <div className="mx-3 my-2 text-center text-secondary">{'If you have any questions, please email to '}<a href="mailto:omegathrone@omegathrone.com">omegathrone@omegathrone.com</a>.</div>

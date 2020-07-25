@@ -1,7 +1,7 @@
 {
-  "name": "omega-pin",
+  "name": "omega-memo",
   "version": "1.0.0",
-  "description": "omega-pin",
+  "description": "omega-memo",
   "main": "server/index.js",
   "scripts": {
     "dev": "npm-run-all --silent --parallel dev:*",
