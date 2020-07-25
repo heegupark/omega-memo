@@ -161,12 +161,12 @@ class PinMobile extends Component {
             }
           </div>
           <TextareaAutosize
-            aria-label="minimum height"
+            aria-label="memo"
             rowsMin={8}
             style={{ color: `${textColor}` }}
             readOnly={isLocked || isDelete}
             className="w-100 bg-transparent border-0 px-2 py-2 resize-none"
-            placeholder="memo here"
+            placeholder={isLocked ? 'drag this' : 'memo here'}
             value={memo || ''}
             onChange={handleChangeInput} />
           {isDelete
