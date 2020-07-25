@@ -9,7 +9,6 @@ import socketIOClient from 'socket.io-client';
 import Card from '@material-ui/core/Card';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fade from '@material-ui/core/Fade';
-// import ColorPicker from './color-picker';
 import PopperComponent from './popper-component';
 
 const socket = socketIOClient('/');
@@ -167,18 +166,16 @@ class Pin extends Component {
           <Card
             style={{ backgroundColor: `${color}` }}
             className="pin handle rounded position-absolute text-center">
-            {isDelete
-              ? (
-                <div className="w-100 text-center h-30"></div>
-              )
-              : (
-                <div className="w-100 text-center h-30">
+            <div className="w-100 text-center h-30">
+              {isDelete
+                ? ('')
+                : (
                   <Tooltip
                     arrow
                     title={isLocked ? 'unlock' : 'lock'}>
                     <IconButton
                       color='primary'
-                      className="my-auto"
+                      className="my-auto cursor"
                       size="small"
                       style={{ color: revColor }}
                       aria-label={isLocked ? 'unlock this memo' : 'lock this memo'}
@@ -186,9 +183,9 @@ class Pin extends Component {
                     >{isLocked ? <LockOpenIcon /> : <LockIcon />}
                     </IconButton>
                   </Tooltip>
-                </div>
-              )
-            }
+                )
+              }
+            </div>
             <TextareaAutosize
               aria-label="minimum height"
               rowsMin={8}

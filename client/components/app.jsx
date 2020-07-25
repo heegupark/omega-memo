@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+import Grid from '@material-ui/core/Grid';
+import Header from './header';
+import Footer from './footer';
 import Pin from './pin';
+import PinMobile from './pin-mobile';
+import { isMobile } from 'react-device-detect';
 import socketIOClient from 'socket.io-client';
 const socket = socketIOClient('/');
 
@@ -128,10 +133,55 @@ class App extends Component {
   render() {
     const { pins } = this.state;
     const { handleBoardClick, updatePin, deletePin } = this;
+    if (isMobile) {
+      return (
+        <>
+          <Header />
+          <main
+            className="bg-dark pin-board py-5">
+            <Grid container>
+              <Grid item xs>
+                <Grid container justify="center">
+                  {pins
+                    ? (
+                      pins.map(pin => {
+                        return (
+                          <PinMobile
+                            key={pin._id}
+                            pin={pin}
+                            updatePin={updatePin}
+                            deletePin={deletePin}
+                          />
+                        );
+                      })
+                    )
+                    : ''
+                  }
+                  <div className="mt-3 mx-2">
+                    <div
+                      style={{ height: '246px' }}
+                      className="bg-transparent pin rounded position-relative text-center"
+                    >
+                      <div
+                        style={{ fontSize: '55px', color: 'white' }}
+                        className="mt-5" onClick={handleBoardClick}>
+                        {'+'}
+                      </div>
+                    </div>
+                  </div>
+                </Grid>
+              </Grid>
+            </Grid>
+          </main>
+          <Footer />
+        </>
+      );
+    }
     return (
       <>
-        <div
-          className="mx-auto bg-dark pin-board cursor"
+        <Header />
+        <main
+          className="bg-dark pin-board cursor py-3"
           onMouseDown={handleBoardClick}>
           {pins
             ? (
@@ -148,7 +198,8 @@ class App extends Component {
             )
             : ''
           }
-        </div>
+        </main>
+        <Footer />
       </>
     );
   }
