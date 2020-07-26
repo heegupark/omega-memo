@@ -17,7 +17,8 @@
 5. Used mongo and mongoose module to connect MongoDB database
 6. Used AWS EC2 for web and API server and MongoDB cloud for MongoDB database
 7. Used socket.io to broadcast all memos in real time
-8. Support most of mobile devices(iPad - Landsacpe/Portrait, iPhone X - Landsacpe/Portrait, iPhone 6s/7s/8s - Landsacpe/Portrait, iPhone 6/7/8 - Landsacpe/Portrait, and so on)
+8. Used React Router to route new memo board(first connect to generate the url) and existing memo boards
+9. Support most of mobile devices(iPad - Landsacpe/Portrait, iPhone X - Landsacpe/Portrait, iPhone 6s/7s/8s - Landsacpe/Portrait, iPhone 6/7/8 - Landsacpe/Portrait, and so on)
 
 ## Planned Features
 1. User can view memos.
@@ -25,6 +26,7 @@
 3. User can create a memo.
 5. User can update a memo.
 6. User can delete a memo .
+7. User can share the unique url with others.
 
 ## Lessons Learned
 1. Various ways of dynamically displaying data using React virtual DOM functions
@@ -35,10 +37,14 @@
 6. Experienced to create MongoDB database to store and retrieve data upon the request of a client via API server
 7. Experienced to use Material UI to make the application more professionally
 8. Experienced to use socket.io to broadcast all memos from other users in real time
-9. Experienced to deploy the web and API server into AWS EC2 and create MongoDB database instance into MongoDB cloud
+9. Experienced to use React Router to route different memo boards
+10. Experienced to deploy the web and API server into AWS EC2 and create MongoDB database instance into MongoDB cloud
 
 ## Live Site
-* You can see and test the live version here: <a href="https://pin.heegu.net" target="blank">pin.heegu.net</a>
+* You can see and test the live version here: <a href="https://memo.heegu.net" target="blank">memo.heegu.net</a>
+
+## Sample Memo
+* You can see and test the live version here: <a href="https://memo.heegu.net/sample" target="blank">Sample Memo</a>
 
 ## Screen shot
 [Desktop]
