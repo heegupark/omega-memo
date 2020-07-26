@@ -5,6 +5,7 @@ const ClientError = require('./client-error');
 const express = require('express');
 const app = express();
 const Memo = require('./models/memo');
+const Board = require('./models/board');
 app.use(staticMiddleware);
 app.use(express.json());
 // for socket communication
@@ -23,15 +24,24 @@ io.on('connection', socket => {
   });
 });
 // GETTING MEMOS
-app.get('/api/memo', async (req, res) => {
+app.get('/api/memo/:board', async (req, res) => {
+  const { board } = req.params;
   try {
-    const memo = await Memo.find();
-    if (!memo) {
-      return res.status(400).json({ success: false, message: 'failed to find a memo' });
+    const findBoard = await Board.findOne({ board });
+    if (!findBoard) {
+      const newBoard = new Board({
+        board
+      });
+      await newBoard.save();
+      return res.status(201).json({ success: true, message: 'board is created' });
     }
-    return res.status(200).json({ success: true, data: memo });
+    const memo = await Memo.find({ board });
+    if (!memo.length) {
+      return res.status(202).json({ success: true, message: 'board is existed, but no memo is found' });
+    }
+    return res.status(200).json({ success: true, data: memo, message: 'success to find memos' });
   } catch (e) {
-    return res.status(400).json(e);
+    return res.status(400).json({ success: false, message: e.message });
   }
 });
 // ADDING A MEMO
@@ -41,21 +51,21 @@ app.post('/api/memo', async (req, res) => {
   });
   try {
     await memo.save();
-    req.io.sockets.emit('memos', { status: 'add', data: memo });
+    req.io.sockets.emit(`memos-${req.body.board}`, { status: 'add', data: memo });
     return res.status(200).json({ success: true, data: memo });
   } catch (e) {
-    return res.status(400).json(e);
+    return res.status(400).json({ success: false, message: e.message });
   }
 });
 // DELETING A MEMO
 app.delete('/api/memo', async (req, res) => {
-  const { _id } = req.body;
+  const { _id, board } = req.body;
   try {
     const memo = await Memo.findOneAndDelete({ _id });
     if (!memo) {
       return res.status(404).json({ success: false, message: 'failed to find a memo' });
     }
-    req.io.sockets.emit('memos', { status: 'delete', data: memo });
+    req.io.sockets.emit(`memos-${board}`, { status: 'delete', data: memo });
     return res.status(201).json({ success: true });
   } catch (e) {
     return res.status(400).json({ success: false, message: e.message });

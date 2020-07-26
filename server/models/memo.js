@@ -30,11 +30,16 @@ const memoSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
     default: false
+  },
+  board: {
+    type: String,
+    required: true,
+    ref: 'Board'
   }
 }, {
   timestamps: true
 });
 
-const Gram = mongoose.model('Memo', memoSchema);
+const Memo = mongoose.model('Memo', memoSchema);
 
-module.exports = Gram;
+module.exports = Memo;

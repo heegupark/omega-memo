@@ -96,9 +96,11 @@
     "react-device-detect": "^1.13.1",
     "react-dom": "16.12.0",
     "react-draggable": "^4.4.3",
+    "react-router-dom": "^5.2.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.8.0",

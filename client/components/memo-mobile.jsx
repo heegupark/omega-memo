@@ -30,7 +30,7 @@ class MemoMobile extends Component {
     this.handleChangeInput = this.handleChangeInput.bind(this);
     this.handleDelBtnToggle = this.handleDelBtnToggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.Memo = this.Memo.bind(this);
+    this.changeMemo = this.changeMemo.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.idRef = React.createRef();
     this.positionRef = React.createRef();
@@ -56,7 +56,7 @@ class MemoMobile extends Component {
     this.setState({
       isLocked: true
     });
-    this.Memo(true);
+    this.changeMemo(true);
   }
 
   handleUnlockBtnClick(e) {
@@ -88,15 +88,15 @@ class MemoMobile extends Component {
 
   setBackgroundColor(color) {
     this.setState({ color });
-    this.Memo();
+    this.changeMemo();
   }
 
   setTextColor(textColor) {
     this.setState({ textColor });
-    this.Memo();
+    this.changeMemo();
   }
 
-  Memo(isLocked) {
+  changeMemo(isLocked) {
     const currentPosX = 100 + Math.floor((Math.random(0, 1) * 600));
     const currentPosY = 100 + Math.floor((Math.random(0, 1) * 400));
     const memo = {
@@ -113,7 +113,7 @@ class MemoMobile extends Component {
 
   handleChange(e) {
     e.preventDefault();
-    this.Memo();
+    this.changeMemo();
   }
 
   render() {
