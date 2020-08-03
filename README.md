@@ -25,7 +25,7 @@
 2. User can view the detail of a memo.
 3. User can create a memo.
 5. User can update a memo.
-6. User can delete a memo .
+6. User can delete a memo.
 7. User can share the unique url with others.
 
 ## Lessons Learned
