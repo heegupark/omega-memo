@@ -3,7 +3,7 @@
 > - Maintained by: `Heegu Park`
 
 ## Functionality Overview
-1. A client receive the data from a server and dynamically display the data in HTML format
+1. A client receives the data from a server and dynamically display the data in HTML format
     - to view the memos
     - to create a memo, update a memo, delete a post
     - to drag a memo to other place
